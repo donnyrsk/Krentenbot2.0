@@ -21,6 +21,12 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready():
     print(f"Ingelogd als {bot.user}")
+
+    await bot.change_presence(
+        status=discord.Status.online,
+        activity=discord.Game("Krentenbot | /help")
+    )
+
     try:
         synced = await bot.tree.sync()
         print(f"{len(synced)} slash commands gesynct")
@@ -34,12 +40,13 @@ async def main():
     setup_database()
 
     async with bot:
-        await bot.load_extension("cogs.commands.SPS.steen_papier_schaar")
+        await bot.load_extension("cogs.sps")
         await bot.load_extension("cogs.profile")
         await bot.load_extension("cogs.stats")
-        await bot.load_extension("cogs.commands.mop")
-        await bot.load_extension("cogs.events.Fun.je_moeder")
+        await bot.load_extension("cogs.mop")
+        await bot.load_extension("cogs.je_moeder")
         await bot.load_extension("cogs.leaderboard")
+        await bot.load_extension("cogs.help")
 
         await bot.start(TOKEN)
 

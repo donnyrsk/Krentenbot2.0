@@ -41,7 +41,7 @@ class Leaderboard(commands.Cog):
                 )
 
             embed = discord.Embed(
-                title="🌍 Steen papier schaar leaderboard",
+                title="Steen papier schaar Leaderboard",
                 description="\n".join(regels),
                 color=discord.Color.gold()
             )
@@ -67,7 +67,7 @@ class Leaderboard(commands.Cog):
                 regels.append(f"**{icoon}** <@{user_id}> — 💬 {messages} berichten")
 
             embed = discord.Embed(
-                title=f"💬 Message Leaderboard - **{interaction.guild.name}**",
+                title=f"Message Leaderboard - **{interaction.guild.name}**",
                 description="\n".join(regels),
                 color=discord.Color.blue()
             )
@@ -99,7 +99,7 @@ class Leaderboard(commands.Cog):
                 )
 
             embed = discord.Embed(
-                title=f"🎤 Voice Leaderboard - **{interaction.guild.name}**",
+                title=f"Voice Leaderboard - **{interaction.guild.name}**",
                 description="\n".join(regels),
                 color=discord.Color.purple()
             )
