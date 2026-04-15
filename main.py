@@ -29,6 +29,9 @@ async def main():
         await bot.load_extension("cogs.commands.SPS.steen_papier_schaar")
         await bot.load_extension("cogs.profile")
         await bot.load_extension("cogs.stats")
+        await bot.load_extension("cogs.commands.mop")
+        await bot.load_extension("cogs.events.Fun.je_moeder")
+        await bot.load_extension("cogs.leaderboard")
 
         await bot.start(TOKEN)
 
