@@ -3,6 +3,9 @@ import random
 from discord.ext import commands
 from discord import app_commands
 
+from database import create_profile_if_not_exists, add_win, add_loss, add_draw
+
+
 class SteenPapierSchaar(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -16,35 +19,37 @@ class SteenPapierSchaar(commands.Cog):
     @app_commands.command(name="sps", description="Speel steen, papier, schaar")
     @app_commands.choices(keuze=keuzes)
     async def sps(self, interaction: discord.Interaction, keuze: app_commands.Choice[str]):
+        user_id = interaction.user.id
         user_keuze = keuze.value
         bot_keuze = random.choice(["steen", "papier", "schaar"])
 
-        if user_keuze == "steen":
-            user_emote = "🪨"
-        elif user_keuze == "papier":
-            user_emote = "📄"
-        elif user_keuze == "schaar":
-            user_emote = "✂️"
+        create_profile_if_not_exists(user_id)
 
-        if bot_keuze == "steen":
-            bot_emote = "🪨"
-        elif bot_keuze == "papier":
-            bot_emote = "📄"
-        elif bot_keuze == "schaar":
-            bot_emote = "✂️"
+        emoji = {
+            "steen": "🪨",
+            "papier": "📄",
+            "schaar": "✂️"
+        }
+
+        user_emote = emoji[user_keuze]
+        bot_emote = emoji[bot_keuze]
 
         if bot_keuze == user_keuze:
-            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nWAT?! GELIJKSPEL?! *tieft pc in het water*"
+            add_draw(user_id)
+            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nGelijkspel!"
         elif (
             (user_keuze == "steen" and bot_keuze == "schaar") or
             (user_keuze == "papier" and bot_keuze == "steen") or
             (user_keuze == "schaar" and bot_keuze == "papier")
         ):
-            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nIk heb {bot_keuze} gekozen, jij wint verdomme *slaat bureau in tienen*"
+            add_win(user_id)
+            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nJij wint!"
         else:
-            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nIk heb {bot_keuze} gekozen, jij verliest TERING NOOB! 🖕"
+            add_loss(user_id)
+            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nIk win!"
 
         await interaction.response.send_message(uitslag)
+
 
 async def setup(bot):
     await bot.add_cog(SteenPapierSchaar(bot))
