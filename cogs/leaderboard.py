@@ -14,9 +14,9 @@ class Leaderboard(commands.Cog):
         self.bot = bot
 
     soorten = [
-        app_commands.Choice(name="SPS Globaal", value="sps"),
-        app_commands.Choice(name="Messages Deze Server", value="messages"),
-        app_commands.Choice(name="Voice Deze Server", value="voice")
+        app_commands.Choice(name="Steen papier schaar", value="sps"),
+        app_commands.Choice(name="Messages", value="messages"),
+        app_commands.Choice(name="Voice", value="voice")
     ]
 
     @app_commands.command(name="leaderboard", description="Bekijk een leaderboard")
@@ -32,15 +32,16 @@ class Leaderboard(commands.Cog):
                 return
 
             regels = []
+            medals = {1: "🥇", 2: "🥈", 3: "🥉"}
+
             for i, (user_id, wins, losses, draws) in enumerate(data, start=1):
-                user = self.bot.get_user(user_id)
-                naam = user.name if user else f"User {user_id}"
+                icoon = medals.get(i, f"#{i}")
                 regels.append(
-                    f"**#{i}** {naam} — 🏆 {wins} wins | 💀 {losses} losses | 🤝 {draws} draws"
+                    f"**{icoon}** <@{user_id}> — 🏆 {wins} wins | 💀 {losses} losses | 🤝 {draws} draws"
                 )
 
             embed = discord.Embed(
-                title="🌍 Globale SPS Leaderboard",
+                title="🌍 Steen papier schaar leaderboard",
                 description="\n".join(regels),
                 color=discord.Color.gold()
             )
@@ -59,15 +60,14 @@ class Leaderboard(commands.Cog):
                 return
 
             regels = []
+            medals = {1: "🥇", 2: "🥈", 3: "🥉"}
+
             for i, (user_id, messages) in enumerate(data, start=1):
-                member = interaction.guild.get_member(user_id)
-                naam = member.display_name if member else f"User {user_id}"
-                regels.append(
-                    f"**#{i}** {naam} — 💬 {messages} berichten"
-                )
+                icoon = medals.get(i, f"#{i}")
+                regels.append(f"**{icoon}** <@{user_id}> — 💬 {messages} berichten")
 
             embed = discord.Embed(
-                title=f"💬 Message Leaderboard - {interaction.guild.name}",
+                title=f"💬 Message Leaderboard - **{interaction.guild.name}**",
                 description="\n".join(regels),
                 color=discord.Color.blue()
             )
@@ -86,20 +86,20 @@ class Leaderboard(commands.Cog):
                 return
 
             regels = []
-            for i, (user_id, voice_seconds) in enumerate(data, start=1):
-                member = interaction.guild.get_member(user_id)
-                naam = member.display_name if member else f"User {user_id}"
+            medals = {1: "🥇", 2: "🥈", 3: "🥉"}
 
+            for i, (user_id, voice_seconds) in enumerate(data, start=1):
+                icoon = medals.get(i, f"#{i}")
                 uren = voice_seconds // 3600
                 minuten = (voice_seconds % 3600) // 60
                 seconden = voice_seconds % 60
 
                 regels.append(
-                    f"**#{i}** {naam} — 🎤 {uren}u {minuten}m {seconden}s"
+                    f"**{icoon}** <@{user_id}> — 🎤 {uren}u {minuten}m {seconden}s"
                 )
 
             embed = discord.Embed(
-                title=f"🎤 Voice Leaderboard - {interaction.guild.name}",
+                title=f"🎤 Voice Leaderboard - **{interaction.guild.name}**",
                 description="\n".join(regels),
                 color=discord.Color.purple()
             )

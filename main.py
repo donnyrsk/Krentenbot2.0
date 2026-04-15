@@ -1,4 +1,5 @@
 import os
+import asyncio
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -20,6 +21,13 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready():
     print(f"Ingelogd als {bot.user}")
+    try:
+        synced = await bot.tree.sync()
+        print(f"{len(synced)} slash commands gesynct")
+        for command in bot.tree.get_commands():
+            print(f"/{command.name}")
+    except Exception as e:
+        print(f"Sync fout: {e}")
 
 
 async def main():
@@ -36,5 +44,4 @@ async def main():
         await bot.start(TOKEN)
 
 
-import asyncio
 asyncio.run(main())
