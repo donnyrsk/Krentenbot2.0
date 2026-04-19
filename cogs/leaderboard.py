@@ -14,9 +14,9 @@ class Leaderboard(commands.Cog):
         self.bot = bot
 
     soorten = [
-        app_commands.Choice(name="Steen papier schaar", value="sps"),
-        app_commands.Choice(name="Messages", value="messages"),
-        app_commands.Choice(name="Voice", value="voice")
+        app_commands.Choice(name="sps", value="sps"),
+        app_commands.Choice(name="messages", value="messages"),
+        app_commands.Choice(name="voice", value="voice")
     ]
 
     @app_commands.command(name="leaderboard", description="Bekijk een leaderboard")
@@ -41,7 +41,7 @@ class Leaderboard(commands.Cog):
                 )
 
             embed = discord.Embed(
-                title="Steen papier schaar Leaderboard",
+                title="🎮 SPS Leaderboard",
                 description="\n".join(regels),
                 color=discord.Color.gold()
             )
@@ -64,10 +64,10 @@ class Leaderboard(commands.Cog):
 
             for i, (user_id, messages) in enumerate(data, start=1):
                 icoon = medals.get(i, f"#{i}")
-                regels.append(f"**{icoon}** <@{user_id}> — 💬 {messages} berichten")
+                regels.append(f"**{icoon}** <@{user_id}> — **{messages} berichten**")
 
             embed = discord.Embed(
-                title=f"Message Leaderboard - **{interaction.guild.name}**",
+                title=f"💬 Message Leaderboard - **{interaction.guild.name}**",
                 description="\n".join(regels),
                 color=discord.Color.blue()
             )
@@ -95,11 +95,11 @@ class Leaderboard(commands.Cog):
                 seconden = voice_seconds % 60
 
                 regels.append(
-                    f"**{icoon}** <@{user_id}> — 🎤 {uren}u {minuten}m {seconden}s"
+                    f"**{icoon}** <@{user_id}> — **{uren}u {minuten}m {seconden}s**"
                 )
 
             embed = discord.Embed(
-                title=f"Voice Leaderboard - **{interaction.guild.name}**",
+                title=f"🔊 Voice Leaderboard - **{interaction.guild.name}**",
                 description="\n".join(regels),
                 color=discord.Color.purple()
             )

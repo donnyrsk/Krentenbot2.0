@@ -1,4 +1,5 @@
 import discord
+from discord import user
 from discord.ext import commands
 from discord import app_commands
 
@@ -14,9 +15,12 @@ class Profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="profiel", description="Bekijk jouw profiel")
-    async def profiel(self, interaction: discord.Interaction):
-        user_id = interaction.user.id
+    @app_commands.command(name="profiel", description="Bekijk een profiel")
+    @app_commands.describe(user="De gebruiker waarvan je het profiel wilt zien")
+    async def profiel(self, interaction: discord.Interaction, user: discord.User = None):
+
+        target = user or interaction.user
+        user_id = target.id
 
         create_sps_profile_if_not_exists(user_id)
         wins, losses, draws = get_sps_profile(user_id)
@@ -32,42 +36,35 @@ class Profile(commands.Cog):
             create_server_profile_if_not_exists(user_id, guild_id)
             server_profile = get_server_profile(user_id, guild_id)
 
-            if server_profile is not None:
+            if server_profile:
                 messages, voice_seconds = server_profile
 
         uren = voice_seconds // 3600
         minuten = (voice_seconds % 3600) // 60
         seconden = voice_seconds % 60
 
-        totaal_sps = wins + losses + draws
-        winrate = round((wins / totaal_sps) * 100, 1) if totaal_sps > 0 else 0
+        totaal = wins + losses + draws
+        winrate = round((wins / totaal) * 100, 1) if totaal > 0 else 0
 
         embed = discord.Embed(
-            title=f"📊 Profiel van {interaction.user.display_name}",
-            description=f"Stats overzicht voor **{interaction.user.mention}**",
+            title=f"📊 Profiel van {target.display_name}",
+            description=f"Stats overzicht voor {target.mention}",
             color=discord.Color.blurple()
         )
 
-        if interaction.user.avatar:
-            embed.set_thumbnail(url=interaction.user.avatar.url)
+        if target.avatar:
+            embed.set_thumbnail(url=target.avatar.url)
 
         embed.add_field(
-            name="👤 Algemeen",
+            name="🎮 SPS Stats",
             value=(
-                f"**Gebruiker:** {interaction.user.mention}\n"
-                f"**Server:** {server_naam}"
-            ),
-            inline=False
-        )
-
-        embed.add_field(
-            name="🎮 Steen Papier Schaar",
-            value=(
-                f"**Wins:** {wins}\n"
-                f"**Losses:** {losses}\n"
-                f"**Draws:** {draws}\n"
-                f"**Totaal gespeeld:** {totaal_sps}\n"
-                f"**Winrate:** {winrate}%"
+                "```"
+                f"Wins     | {wins}\n"
+                f"Losses   | {losses}\n"
+                f"Draws    | {draws}\n"
+                f"Played   | {totaal}\n"
+                f"Winrate  | {winrate}%\n"
+                "```"
             ),
             inline=False
         )
@@ -75,8 +72,10 @@ class Profile(commands.Cog):
         embed.add_field(
             name="💬 Server Stats",
             value=(
-                f"**Messages:** {messages}\n"
-                f"**Voice time:** {uren}u {minuten}m {seconden}s"
+                "```"
+                f"Messages | {messages}\n"
+                f"Voice    | {uren}u {minuten}m {seconden}s\n"
+                "```"
             ),
             inline=False
         )

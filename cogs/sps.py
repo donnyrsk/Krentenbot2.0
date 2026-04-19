@@ -11,9 +11,9 @@ class SteenPapierSchaar(commands.Cog):
         self.bot = bot
 
     keuzes = [
-        app_commands.Choice(name="Steen", value="steen"),
-        app_commands.Choice(name="Papier", value="papier"),
-        app_commands.Choice(name="Schaar", value="schaar")
+        app_commands.Choice(name="steen", value="steen"),
+        app_commands.Choice(name="papier", value="papier"),
+        app_commands.Choice(name="schaar", value="schaar")
     ]
 
     @app_commands.command(name="sps", description="Speel steen, papier, schaar")
