@@ -1,9 +1,9 @@
 from discord.ext import commands
+import re
 
 class JeMoeder(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.jemoeder = ["je moeder", "jouw moeder"]
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -12,7 +12,7 @@ class JeMoeder(commands.Cog):
 
         content = message.content.lower()
 
-        if any(word in content for word in self.jemoeder):
+        if re.search(r"\b(je moeder|jouw moeder)\b", content):
             await message.channel.send("JOUW MOEDER!")
 
 async def setup(bot):
