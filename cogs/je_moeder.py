@@ -3,7 +3,7 @@ from discord.ext import commands
 class JeMoeder(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.jemoeder = ["je moeder", "je ma", "je mama, jouw moeder"]
+        self.jemoeder = ["je moeder", "jouw moeder"]
 
     @commands.Cog.listener()
     async def on_message(self, message):
