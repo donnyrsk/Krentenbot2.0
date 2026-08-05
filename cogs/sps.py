@@ -43,10 +43,10 @@ class SteenPapierSchaar(commands.Cog):
             (user_keuze == "schaar" and bot_keuze == "papier")
         ):
             add_win(user_id)
-            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nIk heb schaar gekozen, jij wint verdomme *slaat bureau in tienen*"
+            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nIk heb {bot_keuze} gekozen, jij wint verdomme *slaat bureau in tienen*"
         else:
             add_loss(user_id)
-            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nIk heb papier gekozen, jij verliest TERING NOOB! 🖕"
+            uitslag = f"Bot kiest {bot_emote} | Jij kiest {user_emote}\n\nIk heb {bot_keuze} gekozen, jij verliest TERING NOOB! 🖕"
 
         await interaction.response.send_message(uitslag)
 
