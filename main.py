@@ -7,7 +7,11 @@ from dotenv import load_dotenv
 from database import setup_database
 
 load_dotenv()
+
 TOKEN = os.getenv("DISCORD_TOKEN")
+
+print("Werkmap:", os.getcwd())
+print("Token gevonden:", TOKEN is not None)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -47,6 +51,7 @@ async def main():
         await bot.load_extension("cogs.je_moeder")
         await bot.load_extension("cogs.leaderboard")
         await bot.load_extension("cogs.help")
+        await bot.load_extension("cogs.lorcana.deck")
 
         await bot.start(TOKEN)
 
